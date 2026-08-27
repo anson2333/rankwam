@@ -40,6 +40,21 @@ dependencies = [
   "wandb==0.23.1",
 ]
 
+[project.optional-dependencies]
+libero = [
+  "bddl==1.0.1",
+  "cloudpickle==2.1.0",
+  "easydict==1.13",
+  "future==1.0.0",
+  "gym==0.25.2",
+  "matplotlib==3.10.9",
+  "mujoco==3.3.2",
+  "robosuite==1.4.0",
+  "scikit-image==0.25.2",
+  "scipy==1.15.3",
+  "wand==0.7.2",
+]
+
 [tool.setuptools.package-dir]
 "" = "src"
 

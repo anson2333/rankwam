@@ -1,0 +1,78 @@
+project: rankwam
+seed: 42
+
+environment:
+  suite: libero_object
+  task_id: 0
+  resolution: 256
+  warmup_steps: 5
+
+restore_test:
+  repeats: 5
+  rollout_steps: 10
+  states_per_episode: 4
+  episodes: 5
+  atol: 1.0e-7
+
+counterfactual:
+  num_states: 90
+  candidates_per_state: 8
+  model_seeds: [100, 101, 102, 103, 104]
+  horizons: [10, 16, 32]
+  perturbation_std: [0.05, 0.10, 0.20]
+  demo_anchor_enabled: false
+  phase_sampling:
+    strategy: boundary_aware
+    checkpoints_per_episode: 17
+    checkpoint_stride: 10
+    max_cache_mb_per_episode: 50
+    phases: [pre_regression, regression_trough, first_grasp, stable_transport]
+    max_groups_per_episode: 3
+    selection_before_outcomes: true
+
+continuation:
+  enabled: true
+  terminal_policy_step: 200
+  candidate_horizon: 32
+  short_horizon_ablation: 60
+  critic_time_conditioning: normalized_policy_step
+  replan_steps: 10
+  targets:
+    - success
+    - max_score
+    - final_score
+    - auc_score
+    - grasp_fraction
+    - grasp_loss_count
+    - grasp_recovery_count
+  save_checkpoint_observations: true
+  observation_stride: 10
+  behavior_policy_versioned: true
+
+method:
+  policy: fastwam_action_expert
+  future_model: action_conditioned_latent_adapter
+  critic_target: fixed_policy_continuation
+  losses:
+    - action_flow_matching
+    - future_latent
+    - continuation_value
+    - within_state_ranking
+    - advantage_weighted_policy
+    - pretrained_policy_anchor
+
+ablations:
+  - baseline_fastwam
+  - future_supervision_only
+  - critic_rl_without_future
+  - future_stop_gradient
+  - joint_future_critic_rl
+
+gates:
+  min_informative_group_rate: 0.20
+  min_oracle_uplift_percentage_points: 10.0
+  min_informative_groups_before_training: 20
+  min_pairwise_accuracy: 0.70
+  min_oracle_future_pairwise_accuracy: 0.75
+  min_future_increment_percentage_points: 5.0
+  max_boundary_groups_without_sufficient_signal: 30
