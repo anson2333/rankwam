@@ -1,3 +1,17 @@
+# RankWAM（FastWAM 研究分支）
+
+这是基于 FastWAM 的 RankWAM 研究分支，当前重点验证同一状态下多个动作候选的
+仿真 continuation 信号能否提供可靠的动作排序。仓库只同步源码、配置、测试和实验协议；
+权重、数据集、虚拟环境、缓存、日志、视频和评测输出均通过外部挂载提供，不上传到 Git。
+
+当前已完成 4051 上的 FastWAM G0 基线链路和 G1 确定性隔离重放，G0 OSMesa pilot 为
+`0/5`（仅作为功能基线，不能当作成功率结论）。候选收集、continuation 标签、断点续跑和
+实验汇总工具已经实现；当前 discovery 数据为 9 个 group / 72 个 candidate，仍需增加
+informative groups 后再训练 ranker。
+
+完整研究状态、实验门槛和后续计划见 [`README_RANKWAM.md`](README_RANKWAM.md)，
+环境复现见 [`docs/bootstrap_4051.md`](docs/bootstrap_4051.md)。
+
 # FastWAM
 
 Official codebase for **Fast-WAM: Do World Action Models Need Test-time Future Imagination?**
